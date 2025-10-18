@@ -1,6 +1,7 @@
 package com.gussoft.inventario.core.business;
 
 import com.gussoft.inventario.intregation.transfer.record.CustomerSould;
+import com.gussoft.inventario.intregation.transfer.record.IProductStock;
 import com.gussoft.inventario.intregation.transfer.record.ProductStock;
 import com.gussoft.inventario.intregation.transfer.response.ReportResponse;
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ public interface ReportService {
 
   ReportResponse generarReporteVentasPorPeriodo(LocalDateTime fechaInicio, LocalDateTime fechaFin);
   Page<Object[]> reporteVentasPorProducto(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
-  Page<ProductStock> reporteVentasPorCategoria(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
+  Page<IProductStock> reporteVentasPorCategoria(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
   Page<Object[]> reporteVentasPorCliente(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
 
   // Reportes de Productos

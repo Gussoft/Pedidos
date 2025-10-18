@@ -20,6 +20,8 @@ import com.gussoft.inventario.intregation.transfer.request.OrderRequest;
 import com.gussoft.inventario.intregation.transfer.request.OrderUpdateRequest;
 import com.gussoft.inventario.intregation.transfer.response.OrderResponse;
 import jakarta.transaction.Transactional;
+
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +57,14 @@ public class OrderServiceImpl implements OrderService {
         }).toList();
     List<Details> response = detailsRepository.saveAll(details);
     data.setDetalles(response);
-    return OrderMapper.toResponse(data);
+    BigDecimal totalSinIgv = details.stream()
+        .map(Details::getSubtotal)
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+    BigDecimal igv = totalSinIgv.multiply(new BigDecimal("0.18"));
+    log.info("IGV calculado para la Order ID {}: {}", data.getIdPedido(), igv);
+    data.setTotal(totalSinIgv);
+    Order save = repository.save(data);
+    return OrderMapper.toResponse(save);
   }
 
   @Transactional

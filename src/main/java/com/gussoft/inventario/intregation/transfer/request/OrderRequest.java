@@ -23,7 +23,6 @@ public class OrderRequest {
   @NotNull
   private Long clienteId;
 
-  @NotNull
   private BigDecimal total;
 
   private String direccionEnvio;

@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import com.gussoft.inventario.core.repository.specification.OrderSpecification;
 import com.gussoft.inventario.intregation.transfer.record.CustomerSould;
+import com.gussoft.inventario.intregation.transfer.record.IProductStock;
 import com.gussoft.inventario.intregation.transfer.record.ProductStock;
 import com.gussoft.inventario.intregation.transfer.response.OrderResponse;
 import com.gussoft.inventario.intregation.transfer.response.ReportResponse;
@@ -93,7 +94,7 @@ public class ReportServiceImpl implements ReportService {
   }
 
   @Override
-  public Page<ProductStock> reporteVentasPorCategoria(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable) {
+  public Page<IProductStock> reporteVentasPorCategoria(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable) {
     return detailsRepository.findVentasPorCategoria(fechaInicio, fechaFin, pageable);
   }
 

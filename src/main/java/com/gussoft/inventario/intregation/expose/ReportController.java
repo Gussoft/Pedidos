@@ -2,6 +2,7 @@ package com.gussoft.inventario.intregation.expose;
 
 import com.gussoft.inventario.core.business.ReportService;
 import com.gussoft.inventario.intregation.transfer.record.CustomerSould;
+import com.gussoft.inventario.intregation.transfer.record.IProductStock;
 import com.gussoft.inventario.intregation.transfer.record.ProductStock;
 import com.gussoft.inventario.intregation.transfer.request.ReportRequest;
 import com.gussoft.inventario.intregation.transfer.response.ReportResponse;
@@ -65,7 +66,7 @@ public class ReportController {
   }
 
   @GetMapping("/ventas/categoria")
-  public ResponseEntity<Page<ProductStock>> reporteVentasPorCategoria(
+  public ResponseEntity<Page<IProductStock>> reporteVentasPorCategoria(
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
       @RequestParam(defaultValue = "0") int page,
@@ -74,7 +75,7 @@ public class ReportController {
     Pageable pageable = PageRequest.of(page, size,
         Sort.by(Sort.Direction.DESC, "totalVentas"));
 
-    Page<ProductStock> reporte = reporteService.reporteVentasPorCategoria(fechaInicio, fechaFin, pageable);
+    Page<IProductStock> reporte = reporteService.reporteVentasPorCategoria(fechaInicio, fechaFin, pageable);
     return ResponseEntity.ok(reporte);
   }
 
