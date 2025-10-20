@@ -31,7 +31,6 @@ public class CustomerController {
 
   private final CustomerService service;
 
-  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/clientes")
   public ResponseEntity<Payloads<List<CustomerResponse>>> findAllWithFilters(
       @RequestParam(required = false, defaultValue = "0") Integer page,
@@ -52,7 +51,6 @@ public class CustomerController {
     return ResponseEntity.ok(response);
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/clientes/{id}")
   public ResponseEntity<Payload<CustomerResponse>> findById(@PathVariable Long id) {
     CustomerResponse response = service.findById(id);
@@ -73,6 +71,7 @@ public class CustomerController {
     return ResponseEntity.ok(new Payload<>(response));
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/clientes/{id}")
   public ResponseEntity<Void> delete(@PathVariable Long id) {
     service.delete(id);

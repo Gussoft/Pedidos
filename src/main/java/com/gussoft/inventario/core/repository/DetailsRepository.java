@@ -2,6 +2,7 @@ package com.gussoft.inventario.core.repository;
 
 import com.gussoft.inventario.core.models.Details;
 import java.time.LocalDateTime;
+import java.util.List;
 import com.gussoft.inventario.intregation.transfer.record.IProductStock;
 import com.gussoft.inventario.intregation.transfer.record.ProductStock;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DetailsRepository extends JpaRepository<Details, Long>, JpaSpecificationExecutor<Details> {
+
+  @Query("SELECT d FROM Details d WHERE d.pedido.idPedido = :idPedido")
+  List<Details> findByPedidoId(@Param("idPedido") Long idPedido);
 
   // Ventas por producto con información completa
   @Query("SELECT p.idProducto, p.nombre, p.marca, p.modelo, SUM(d.cantidad) as totalVendido, SUM(d.subtotal) as totalVentas " +

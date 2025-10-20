@@ -22,6 +22,7 @@ public class Constrains {
   public static final String FILTER_DESCRIPTION = "descripcion";
   public static final String FILTER_STOCK = "stock";
   public static final String FILTER_PRICE = "precio";
+  public static final String FILTER_COUNT = "cantidad";
 
   public static final ZoneId LIMA_ZONE = ZoneId.of("America/Lima");
   public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");

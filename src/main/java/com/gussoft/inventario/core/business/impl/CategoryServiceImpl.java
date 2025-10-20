@@ -1,7 +1,7 @@
 package com.gussoft.inventario.core.business.impl;
 
+import static com.gussoft.inventario.core.util.Constrains.FILTER_NAME;
 import static com.gussoft.inventario.core.util.Constrains.FILTER_STATUS;
-import static org.hibernate.binder.internal.TenantIdBinder.FILTER_NAME;
 
 import com.gussoft.inventario.core.business.CategoryService;
 import com.gussoft.inventario.core.exception.ResourceNotFoundException;

@@ -5,7 +5,7 @@ import com.gussoft.inventario.core.exception.BusinessException;
 import com.gussoft.inventario.core.exception.InsufficientStockException;
 import com.gussoft.inventario.core.exception.InvalidStatusTransitionException;
 import com.gussoft.inventario.core.exception.ResourceNotFoundException;
-import com.gussoft.inventario.core.mappers.DetailMapper;
+import com.gussoft.inventario.core.mappers.DetailsMapper;
 import com.gussoft.inventario.core.mappers.OrderMapper;
 import com.gussoft.inventario.core.models.Customer;
 import com.gussoft.inventario.core.models.Details;
@@ -20,7 +20,6 @@ import com.gussoft.inventario.intregation.transfer.request.OrderRequest;
 import com.gussoft.inventario.intregation.transfer.request.OrderUpdateRequest;
 import com.gussoft.inventario.intregation.transfer.response.OrderResponse;
 import jakarta.transaction.Transactional;
-
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
     log.info("Order creada con ID: {}", data.getIdPedido());
     List<Details> details = request.getDetalles().stream()
         .map(dt -> {
-          Details detail = DetailMapper.toEntity(dt);
+          Details detail = DetailsMapper.toEntity(dt);
           Product product = findByIdProduct(dt.getProducto().getProductoId());
           validateStock(detail, product);
           detail.setPedido(data);
@@ -82,6 +81,10 @@ public class OrderServiceImpl implements OrderService {
       executeStatusActions(order, estadoAnterior, nuevoEstado);
     }
 
+    BigDecimal totalSinIgv = order.getDetalles().stream()
+        .map(Details::getSubtotal)
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+    order.setTotal(totalSinIgv);
     Order orderToUpdate = OrderMapper.toUpdateEntity(order, request);
     Order updatedOrder = repository.save(orderToUpdate);
 

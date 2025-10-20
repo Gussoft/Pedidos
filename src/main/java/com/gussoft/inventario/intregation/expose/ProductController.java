@@ -55,7 +55,6 @@ public class ProductController {
     return ResponseEntity.ok(new Payload<>(response));
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/productos")
   public ResponseEntity<Payload<ProductResponse>> create(@Valid @RequestBody ProductRequest request) {
     ProductResponse response = service.save(request);

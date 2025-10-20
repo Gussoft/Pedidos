@@ -35,7 +35,6 @@ public class OrderController {
     return new ResponseEntity<>(new Payload<>(response), HttpStatus.CREATED);
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/pedidos/{id}")
   public ResponseEntity<Payload<OrderResponse>> update(
       @PathVariable Long id,
@@ -44,6 +43,7 @@ public class OrderController {
     return ResponseEntity.ok(new Payload<>(response));
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/pedidos/{id}")
   public ResponseEntity<Void> delete(@PathVariable Long id) {
     service.delete(id);
@@ -51,7 +51,6 @@ public class OrderController {
   }
 
   @PatchMapping("/pedidos/{id}/estado")
-  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Payload<OrderResponse>> updateStatus(
       @PathVariable Long id,
       @RequestParam OrderStatus estado) {

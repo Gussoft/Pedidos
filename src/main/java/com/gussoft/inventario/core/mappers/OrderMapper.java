@@ -25,7 +25,7 @@ public class OrderMapper {
         .estado(String.valueOf(data.getEstado()))
         .metodoPago(data.getMetodoPago())
         .detalles(data.getDetalles().stream()
-            .map(DetailMapper::toResponse)
+            .map(DetailsMapper::toResponse)
             .toList())
         .build();
   }
@@ -51,7 +51,7 @@ public class OrderMapper {
         .ifPresent(id -> data.setCliente(Customer.builder().idCliente(id).build()));
     Optional.ofNullable(request.getDetalles())
         .ifPresent(details -> data.setDetalles(details.stream()
-            .map(DetailMapper::toEntity).toList()));
+            .map(DetailsMapper::toEntity).toList()));
     return data;
   }
 
