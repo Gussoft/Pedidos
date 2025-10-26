@@ -1,5 +1,7 @@
 package com.gussoft.inventario.core.business;
 
+import com.gussoft.inventario.core.models.Order;
+import com.gussoft.inventario.core.models.OrderStatus;
 import com.gussoft.inventario.intregation.transfer.record.ClientesFrecuentes;
 import com.gussoft.inventario.intregation.transfer.record.ClientesMoreBuy;
 import com.gussoft.inventario.intregation.transfer.record.CustomerSould;
@@ -7,6 +9,7 @@ import com.gussoft.inventario.intregation.transfer.record.IProductHot;
 import com.gussoft.inventario.intregation.transfer.record.IProductStock;
 import com.gussoft.inventario.intregation.transfer.record.ICategoriaVenta;
 import com.gussoft.inventario.intregation.transfer.record.VentasProductos;
+import com.gussoft.inventario.intregation.transfer.response.OrderResponse;
 import com.gussoft.inventario.intregation.transfer.response.ReporteCliente;
 import com.gussoft.inventario.intregation.transfer.response.ReportResponse;
 import java.time.LocalDateTime;
@@ -31,5 +34,7 @@ public interface ReportService {
 
   // Dashboard/Resumen
   ReportResponse obtenerDashboardVentas(LocalDateTime fechaInicio, LocalDateTime fechaFin);
+
+  Page<OrderResponse> buscarPedidosPorDni(String dni, OrderStatus estado, LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
 
 }

@@ -3,6 +3,7 @@ package com.gussoft.inventario.core.business.impl;
 import com.gussoft.inventario.core.business.ReportService;
 import com.gussoft.inventario.core.mappers.OrderMapper;
 import com.gussoft.inventario.core.models.Order;
+import com.gussoft.inventario.core.models.OrderStatus;
 import com.gussoft.inventario.core.repository.CategoryRepository;
 import com.gussoft.inventario.core.repository.CustomerRepository;
 import com.gussoft.inventario.core.repository.DetailsRepository;
@@ -90,6 +91,12 @@ public class ReportServiceImpl implements ReportService {
         .totalVentas(totalVentas)
         .totalPedidos(totalPedidos.intValue())
         .build();
+  }
+
+  @Override
+  public Page<OrderResponse> buscarPedidosPorDni(String dni, OrderStatus estado, LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable) {
+    return orderRepository.findByClienteDniWithFilters(dni, estado, fechaInicio, fechaFin, pageable)
+        .map(OrderMapper::toResponse);
   }
 
   @Override

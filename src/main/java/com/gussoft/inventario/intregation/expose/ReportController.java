@@ -1,6 +1,7 @@
 package com.gussoft.inventario.intregation.expose;
 
 import com.gussoft.inventario.core.business.ReportService;
+import com.gussoft.inventario.core.models.OrderStatus;
 import com.gussoft.inventario.intregation.transfer.record.ClientesFrecuentes;
 import com.gussoft.inventario.intregation.transfer.record.ClientesMoreBuy;
 import com.gussoft.inventario.intregation.transfer.record.CustomerSould;
@@ -9,6 +10,7 @@ import com.gussoft.inventario.intregation.transfer.record.IProductStock;
 import com.gussoft.inventario.intregation.transfer.record.ICategoriaVenta;
 import com.gussoft.inventario.intregation.transfer.record.VentasProductos;
 import com.gussoft.inventario.intregation.transfer.request.ReportRequest;
+import com.gussoft.inventario.intregation.transfer.response.OrderResponse;
 import com.gussoft.inventario.intregation.transfer.response.ReportResponse;
 import com.gussoft.inventario.intregation.transfer.response.ReporteCliente;
 import jakarta.validation.Valid;
@@ -184,5 +186,22 @@ public class ReportController {
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin) {
     ReportResponse metricas = reporteService.obtenerDashboardVentas(fechaInicio, fechaFin);
     return ResponseEntity.ok(metricas);
+  }
+
+  @GetMapping("/boleta")
+  public ResponseEntity<Page<OrderResponse>> buscarPedidosPorDni(
+      @RequestParam String dni,
+      @RequestParam(required = false) OrderStatus estado,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+
+    Pageable pageable = PageRequest.of(page, size);
+
+    Page<OrderResponse> result = reporteService.buscarPedidosPorDni(
+        dni, estado, fechaInicio, fechaFin, pageable);
+
+    return ResponseEntity.ok(result);
   }
 }
