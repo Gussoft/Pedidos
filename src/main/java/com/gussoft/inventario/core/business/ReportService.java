@@ -1,8 +1,13 @@
 package com.gussoft.inventario.core.business;
 
+import com.gussoft.inventario.intregation.transfer.record.ClientesFrecuentes;
+import com.gussoft.inventario.intregation.transfer.record.ClientesMoreBuy;
 import com.gussoft.inventario.intregation.transfer.record.CustomerSould;
+import com.gussoft.inventario.intregation.transfer.record.IProductHot;
 import com.gussoft.inventario.intregation.transfer.record.IProductStock;
-import com.gussoft.inventario.intregation.transfer.record.ProductStock;
+import com.gussoft.inventario.intregation.transfer.record.ICategoriaVenta;
+import com.gussoft.inventario.intregation.transfer.record.VentasProductos;
+import com.gussoft.inventario.intregation.transfer.response.ReporteCliente;
 import com.gussoft.inventario.intregation.transfer.response.ReportResponse;
 import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
@@ -11,17 +16,17 @@ import org.springframework.data.domain.Pageable;
 public interface ReportService {
 
   ReportResponse generarReporteVentasPorPeriodo(LocalDateTime fechaInicio, LocalDateTime fechaFin);
-  Page<Object[]> reporteVentasPorProducto(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
-  Page<IProductStock> reporteVentasPorCategoria(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
-  Page<Object[]> reporteVentasPorCliente(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
+  Page<VentasProductos> reporteVentasPorProducto(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
+  Page<ICategoriaVenta> reporteVentasPorCategoria(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
+  Page<ReporteCliente> reporteVentasPorCliente(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
 
   // Reportes de Productos
-  Page<ProductStock> reporteProductosMasVendidos(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
-  Page<Object[]> reporteProductosStockBajo(Integer stockMinimo, Pageable pageable);
+  Page<IProductHot> reporteProductosMasVendidos(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
+  Page<IProductStock> reporteProductosStockBajo(Integer stockMinimo, Pageable pageable);
 
   // Reportes de Clientes
-  Page<Object[]> reporteClientesMasFrecuentes(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
-  Page<Object[]> reporteClientesMejorCompra(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
+  Page<ClientesFrecuentes> reporteClientesMasFrecuentes(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
+  Page<ClientesMoreBuy> reporteClientesMejorCompra(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
   Page<CustomerSould> reporteClientesTop(LocalDateTime fechaInicio, LocalDateTime fechaFin, Pageable pageable);
 
   // Dashboard/Resumen

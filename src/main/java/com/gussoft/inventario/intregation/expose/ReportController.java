@@ -1,11 +1,16 @@
 package com.gussoft.inventario.intregation.expose;
 
 import com.gussoft.inventario.core.business.ReportService;
+import com.gussoft.inventario.intregation.transfer.record.ClientesFrecuentes;
+import com.gussoft.inventario.intregation.transfer.record.ClientesMoreBuy;
 import com.gussoft.inventario.intregation.transfer.record.CustomerSould;
+import com.gussoft.inventario.intregation.transfer.record.IProductHot;
 import com.gussoft.inventario.intregation.transfer.record.IProductStock;
-import com.gussoft.inventario.intregation.transfer.record.ProductStock;
+import com.gussoft.inventario.intregation.transfer.record.ICategoriaVenta;
+import com.gussoft.inventario.intregation.transfer.record.VentasProductos;
 import com.gussoft.inventario.intregation.transfer.request.ReportRequest;
 import com.gussoft.inventario.intregation.transfer.response.ReportResponse;
+import com.gussoft.inventario.intregation.transfer.response.ReporteCliente;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +55,7 @@ public class ReportController {
   }
 
   @GetMapping("/ventas/producto")
-  public ResponseEntity<Page<Object[]>> reporteVentasPorProducto(
+  public ResponseEntity<Page<VentasProductos>> reporteVentasPorProducto(
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
       @RequestParam(defaultValue = "0") int page,
@@ -61,12 +66,12 @@ public class ReportController {
     Pageable pageable = PageRequest.of(page, size,
         Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
 
-    Page<Object[]> reporte = reporteService.reporteVentasPorProducto(fechaInicio, fechaFin, pageable);
+    Page<VentasProductos> reporte = reporteService.reporteVentasPorProducto(fechaInicio, fechaFin, pageable);
     return ResponseEntity.ok(reporte);
   }
 
   @GetMapping("/ventas/categoria")
-  public ResponseEntity<Page<IProductStock>> reporteVentasPorCategoria(
+  public ResponseEntity<Page<ICategoriaVenta>> reporteVentasPorCategoria(
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
       @RequestParam(defaultValue = "0") int page,
@@ -75,26 +80,25 @@ public class ReportController {
     Pageable pageable = PageRequest.of(page, size,
         Sort.by(Sort.Direction.DESC, "totalVentas"));
 
-    Page<IProductStock> reporte = reporteService.reporteVentasPorCategoria(fechaInicio, fechaFin, pageable);
+    Page<ICategoriaVenta> reporte = reporteService.reporteVentasPorCategoria(fechaInicio, fechaFin, pageable);
     return ResponseEntity.ok(reporte);
   }
 
   @GetMapping("/ventas/cliente")
-  public ResponseEntity<Page<Object[]>> reporteVentasPorCliente(
+  public ResponseEntity<Page<ReporteCliente>> reporteVentasPorCliente(
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size) {
 
-    Pageable pageable = PageRequest.of(page, size,
-        Sort.by(Sort.Direction.DESC, "totalGastado"));
+    Pageable pageable = PageRequest.of(page, size);
 
-    Page<Object[]> reporte = reporteService.reporteVentasPorCliente(fechaInicio, fechaFin, pageable);
+    Page<ReporteCliente> reporte = reporteService.reporteVentasPorCliente(fechaInicio, fechaFin, pageable);
     return ResponseEntity.ok(reporte);
   }
 
   @GetMapping("/productos/mas-vendidos")
-  public ResponseEntity<Page<ProductStock>> reporteProductosMasVendidos(
+  public ResponseEntity<Page<IProductHot>> reporteProductosMasVendidos(
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
       @RequestParam(defaultValue = "0") int page,
@@ -103,12 +107,12 @@ public class ReportController {
     Pageable pageable = PageRequest.of(page, size,
         Sort.by(Sort.Direction.DESC, "totalVendido"));
 
-    Page<ProductStock> reporte = reporteService.reporteProductosMasVendidos(fechaInicio, fechaFin, pageable);
+    Page<IProductHot> reporte = reporteService.reporteProductosMasVendidos(fechaInicio, fechaFin, pageable);
     return ResponseEntity.ok(reporte);
   }
 
   @GetMapping("/productos/stock-bajo")
-  public ResponseEntity<Page<Object[]>> reporteProductosStockBajo(
+  public ResponseEntity<Page<IProductStock>> reporteProductosStockBajo(
       @RequestParam(defaultValue = "10") Integer stockMinimo,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size) {
@@ -116,12 +120,12 @@ public class ReportController {
     Pageable pageable = PageRequest.of(page, size,
         Sort.by(Sort.Direction.ASC, "stock"));
 
-    Page<Object[]> reporte = reporteService.reporteProductosStockBajo(stockMinimo, pageable);
+    Page<IProductStock> reporte = reporteService.reporteProductosStockBajo(stockMinimo, pageable);
     return ResponseEntity.ok(reporte);
   }
 
   @GetMapping("/clientes/frecuentes")
-  public ResponseEntity<Page<Object[]>> reporteClientesMasFrecuentes(
+  public ResponseEntity<Page<ClientesFrecuentes>> reporteClientesMasFrecuentes(
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
       @RequestParam(defaultValue = "0") int page,
@@ -130,21 +134,21 @@ public class ReportController {
     Pageable pageable = PageRequest.of(page, size,
         Sort.by(Sort.Direction.DESC, "totalPedidos"));
 
-    Page<Object[]> reporte = reporteService.reporteClientesMasFrecuentes(fechaInicio, fechaFin, pageable);
+    Page<ClientesFrecuentes> reporte = reporteService.reporteClientesMasFrecuentes(fechaInicio, fechaFin, pageable);
     return ResponseEntity.ok(reporte);
   }
 
   @GetMapping("/clientes/mejor-compra")
-  public ResponseEntity<Page<Object[]>> reporteClientesMejorCompra(
+  public ResponseEntity<Page<ClientesMoreBuy>> reporteClientesMejorCompra(
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size) {
 
     Pageable pageable = PageRequest.of(page, size,
-        Sort.by(Sort.Direction.DESC, "totalGastado"));
+        Sort.by(Sort.Direction.DESC, "mejorCompra"));
 
-    Page<Object[]> reporte = reporteService.reporteClientesMejorCompra(fechaInicio, fechaFin, pageable);
+    Page<ClientesMoreBuy> reporte = reporteService.reporteClientesMejorCompra(fechaInicio, fechaFin, pageable);
     return ResponseEntity.ok(reporte);
   }
 

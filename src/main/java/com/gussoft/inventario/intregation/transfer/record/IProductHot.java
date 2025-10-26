@@ -1,15 +1,11 @@
 package com.gussoft.inventario.intregation.transfer.record;
 
-import java.math.BigDecimal;
-
-public interface IProductStock {
+public interface IProductHot {
 
   Long getIdProducto();
   String getNombre();
   String getMarca();
   String getModelo();
-  Integer getStock();
-  BigDecimal getPrecio();
-  String getCategoria();
+  Long getTotalVendido();
 
 }
